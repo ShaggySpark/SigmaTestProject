@@ -45,6 +45,11 @@ public class ClientApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/order")
+    public ResponseEntity<?> updateClient(@PathVariable Long id, @PathVariable int time){
+        return new ResponseEntity<>(clientService.takeParkingSpot(id, time), HttpStatus.OK);
+    }
+
     @PutMapping("/clearallorders")
     public ResponseEntity<?> clearAllOrders(){
         clientService.clearAllOrders();
