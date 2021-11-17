@@ -21,11 +21,13 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private ParkingRateService parkingRateService;
 
+    //Метод выдает список всех клиентов
     @Override
     public List<ClientEntity> clientsList() {
         return (List<ClientEntity>) clientDao.findAll();
     }
 
+    //Метод выдает конкретного клиента по его id
     @Override
     public ClientEntity findById(Long id) {
         Optional<ClientEntity> client = clientDao.findById(id);
@@ -35,11 +37,16 @@ public class ClientServiceImpl implements ClientService{
         return client.get();
     }
 
+    //Метод создает клиента и заносит его в базу данных
     @Override
-    public ClientEntity createClient(ClientEntity clientEntity) {
-        return clientDao.save(clientEntity);
+    public ClientEntity createClient(String name, String carCode) {
+        ClientEntity client = new ClientEntity();
+        client.setFullName(name);
+        client.setCarCode(carCode);
+        return clientDao.save(client);
     }
 
+    //Метод обновляет данные о клиенте (имя и номера машины)
     @Override
     @Transactional
     public ClientEntity updateClient(Long id, ClientEntity clientEntity) {
@@ -47,18 +54,18 @@ public class ClientServiceImpl implements ClientService{
         if (!client.isPresent()) {
             throw new NotFoundException();
         }
-        client.get().setParkingSpotEntity(clientEntity.getParkingSpotEntity());
-        client.get().setParkingRateEntity(clientEntity.getParkingRateEntity());
         client.get().setFullName(clientEntity.getFullName());
         client.get().setCarCode(clientEntity.getCarCode());
         return clientDao.save(client.get());
     }
 
+    //Метод удаляет клиента
     @Override
     public void deleteById(Long id) {
         clientDao.deleteById(id);
     }
 
+    //Метод ищет первое свободное парковочное место и занимет его
     @Override
     @Transactional
     public ParkingSpotEntity takeParkingSpot(Long clientId, int timeNeeded) {
@@ -75,6 +82,23 @@ public class ClientServiceImpl implements ClientService{
         return parkingSpotEntity;
     }
 
+    //Метод особождает парковочное место
+    @Override
+    @Transactional
+    public ClientEntity freeParkingSpot(Long id){
+        Optional<ClientEntity> client = clientDao.findById(id);
+        if (!client.isPresent()) {
+            throw new NotFoundException();
+        }
+        ParkingSpotEntity parkingSpotEntity = client.get().getParkingSpotEntity();
+        parkingSpotEntity.setEmpty(true);
+        parkingSpotService.updateParkingSpot(parkingSpotEntity.getId(), parkingSpotEntity);
+        client.get().setParkingSpotEntity(null);
+        client.get().setParkingRateEntity(null);
+        return clientDao.save(client.get());
+    }
+
+    //Метод для удаления всех связей одним запросом
     @Override
     @Transactional
     public void clearAllOrders() {

@@ -28,9 +28,9 @@ public class ClientApi {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createClient(@PathVariable ClientEntity clientEntity) {
-        clientService.createClient(clientEntity);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<?> createClient(@PathVariable String name, @PathVariable String carCode) {
+        ClientEntity client = clientService.createClient(name, carCode);
+        return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -48,6 +48,11 @@ public class ClientApi {
     @PutMapping("/order")
     public ResponseEntity<?> updateClient(@PathVariable Long id, @PathVariable int time){
         return new ResponseEntity<>(clientService.takeParkingSpot(id, time), HttpStatus.OK);
+    }
+
+    @PutMapping("/payment")
+    public ResponseEntity<?> updateClient(@PathVariable Long id){
+        return new ResponseEntity<>(clientService.freeParkingSpot(id), HttpStatus.OK);
     }
 
     @PutMapping("/clearallorders")

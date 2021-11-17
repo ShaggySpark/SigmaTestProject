@@ -51,6 +51,7 @@ public class ParkingRateServiceImpl implements ParkingRateService{
         return parkingRateDao.save(parkingRate.get());
     }
 
+    //Метод для подбора тарифа, основываясь на необходиомо времени бронирования
     @Override
     public ParkingRateEntity getParkingRate(int minutesNeeded) {
         List<ParkingRateEntity> allParkingRates = (List<ParkingRateEntity>) parkingRateDao.findAll();

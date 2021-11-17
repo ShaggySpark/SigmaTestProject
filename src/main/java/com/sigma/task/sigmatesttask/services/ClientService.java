@@ -10,9 +10,10 @@ import java.util.List;
 public interface ClientService {
     List<ClientEntity> clientsList ();
     ClientEntity findById(Long id);
-    ClientEntity createClient(ClientEntity clientEntity);
+    ClientEntity createClient(String name, String carCode);
     ClientEntity updateClient(Long id, ClientEntity clientEntity);
     void deleteById(Long id);
+    ClientEntity freeParkingSpot(Long id);
     ParkingSpotEntity takeParkingSpot(Long clientId, int timeNeeded);
     void clearAllOrders();
 

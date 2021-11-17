@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+//Описание сущности Парковочного тарифа (Цена и время бронирования)
+
 import javax.persistence.*;
 
 @Entity

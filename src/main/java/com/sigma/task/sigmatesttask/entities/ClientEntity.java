@@ -1,7 +1,7 @@
 package com.sigma.task.sigmatesttask.entities;
 
+//Описания сущности Клиента
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

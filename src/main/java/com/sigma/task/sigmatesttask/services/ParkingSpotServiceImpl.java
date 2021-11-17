@@ -15,12 +15,14 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     @Autowired
     ParkingSpotRepository parkingSpotDao;
 
+    //Метод выдает список всех парковочных мест
     @Override
     public List<ParkingSpotEntity> listParkingSpots() {
         List<ParkingSpotEntity> allParkingSpots = (List<ParkingSpotEntity>) parkingSpotDao.findAll();
         return allParkingSpots;
     }
 
+    //Метод ищет парковочное место по id
     @Override
     public ParkingSpotEntity findById(Long id) {
         Optional<ParkingSpotEntity> parkingSpot = parkingSpotDao.findById(id);
@@ -30,12 +32,14 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         return parkingSpot.get();
     }
 
+    //Метод для создания парковочного места
     @Override
     public ParkingSpotEntity createParkingSpot(ParkingSpotEntity parkingSpotEntity) {
         ParkingSpotEntity newEntity = parkingSpotDao.save(parkingSpotEntity);
         return newEntity;
     }
 
+    //Метод для изменения парковочного места
     @Override
     @Transactional
     public ParkingSpotEntity updateParkingSpot(Long id, ParkingSpotEntity parkingSpotEntity) {
@@ -50,6 +54,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         return parkingSpotDao.save(parkingSpot.get());
     }
 
+    //Метод для поиска первого свободного парковочного места
     @Override
     public ParkingSpotEntity findFreeParking() {
         List<ParkingSpotEntity> allParkingSpots = (List<ParkingSpotEntity>) parkingSpotDao.findAll();
@@ -58,6 +63,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
             if (parkingSpotEntity.isEmpty())
                 result = parkingSpotEntity;
         }
+        if (result==null)
+            throw new NotFoundException();
         return result;
     }
 

@@ -1,8 +1,8 @@
 package com.sigma.task.sigmatesttask.entities;
 
-import javax.persistence.*;
+//Описание сущност и Парковочного места
 
-import lombok.Data;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
